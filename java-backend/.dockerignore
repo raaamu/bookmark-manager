@@ -1,0 +1,39 @@
+# Git
+.git
+.gitignore
+
+# Build files
+target/
+build/
+out/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# Logs
+logs/
+*.log
+
+# Data files
+data/
+
+# Test reports
+test-output/
+
+# Docker files
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Scripts
+*.sh
+
+# Documentation
+*.md

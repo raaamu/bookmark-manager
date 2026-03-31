@@ -1,0 +1,61 @@
+.bookmarks-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.add-bookmark-card {
+  margin-bottom: 20px;
+}
+
+.bookmark-table {
+  width: 100%;
+}
+
+.url-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions-column {
+  width: 80px;
+  text-align: center;
+}
+
+.small-icon-button {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.small-icon {
+  font-size: 18px;
+  line-height: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.search-field {
+  margin-bottom: 15px;
+}
+
+.no-data-cell {
+  padding: 20px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+}

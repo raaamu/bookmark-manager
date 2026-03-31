@@ -1,0 +1,18 @@
+# Web framework
+Flask==2.0.1  # Core Flask framework
+
+# Database ORM
+Flask-SQLAlchemy==2.5.1  # SQLAlchemy integration for Flask
+SQLAlchemy==1.4.41  # SQL toolkit and ORM
+
+# CORS support
+Flask-Cors==3.0.10  # Cross-Origin Resource Sharing support
+
+# Environment variables
+python-dotenv==0.19.0  # Load environment variables from .env file
+
+# Authentication
+Flask-JWT-Extended==4.3.1  # JWT authentication for Flask
+
+# Utilities
+Werkzeug==2.0.1  # WSGI utilities and password hashing 

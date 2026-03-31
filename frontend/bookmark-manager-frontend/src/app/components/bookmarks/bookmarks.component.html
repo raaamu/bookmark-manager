@@ -1,0 +1,128 @@
+<!-- 
+  Main container for the bookmarks page
+  Contains the toolbar, add bookmark form, and bookmarks table
+-->
+<div class="bookmarks-container">
+  <!-- Top navigation bar with app title and logout button -->
+  <mat-toolbar color="primary">
+    <span>Bookmark Manager</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="logout()">Logout</button>
+  </mat-toolbar>
+
+  <!-- Main content area with padding -->
+  <div class="content">
+    <!-- Card for adding new bookmarks -->
+    <mat-card class="add-bookmark-card">
+      <mat-card-header>
+        <mat-card-title>Add New Bookmark</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Form with validation for adding new bookmarks -->
+        <form [formGroup]="bookmarkForm" (ngSubmit)="addBookmark()">
+          <!-- URL input field with validation -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL</mat-label>
+            <input matInput formControlName="url" placeholder="https://example.com">
+            <!-- Error message for required validation -->
+            <mat-error *ngIf="bookmarkForm.get('url')?.hasError('required')">
+              URL is required
+            </mat-error>
+            <!-- Error message for URL pattern validation -->
+            <mat-error *ngIf="bookmarkForm.get('url')?.hasError('pattern')">
+              Please enter a valid URL
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Title input field with validation -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" placeholder="Bookmark Title">
+            <!-- Error message for required validation -->
+            <mat-error *ngIf="bookmarkForm.get('title')?.hasError('required')">
+              Title is required
+            </mat-error>
+          </mat-form-field>
+          
+          <!-- Description input field (optional) -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Optional description"></textarea>
+          </mat-form-field>
+
+          <!-- Submit button, disabled when form is invalid -->
+          <button mat-raised-button color="primary" type="submit" [disabled]="!bookmarkForm.valid">
+            Add Bookmark
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Card for displaying bookmarks table -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>My Bookmarks</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Search field for filtering bookmarks -->
+        <mat-form-field appearance="outline" class="full-width search-field">
+          <mat-label>Search Bookmarks</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Search by title, URL, or description">
+          <button *ngIf="isSearching" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        
+        <!-- Material table to display bookmarks -->
+        <table mat-table [dataSource]="bookmarks" class="full-width bookmark-table">
+          <!-- Title column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let bookmark">{{bookmark.title}}</td>
+          </ng-container>
+
+          <!-- URL column with clickable links -->
+          <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef>URL</th>
+            <td mat-cell *matCellDef="let bookmark" class="url-cell">
+              <a [href]="bookmark.url" target="_blank">{{bookmark.url}}</a>
+            </td>
+          </ng-container>
+          
+          <!-- Description column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let bookmark">{{bookmark.description || '-'}}</td>
+          </ng-container>
+
+          <!-- Actions column with delete button -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-column">Actions</th>
+            <td mat-cell *matCellDef="let bookmark" class="actions-column">
+              <button mat-icon-button color="warn" class="small-icon-button" (click)="deleteBookmark(bookmark.id)">
+                <mat-icon class="small-icon">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- Table header and row definitions -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+          <!-- No data row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              <div *ngIf="isSearching; else noBookmarks">
+                No bookmarks match your search criteria
+              </div>
+              <ng-template #noBookmarks>
+                No bookmarks found. Add your first bookmark above!
+              </ng-template>
+            </td>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
