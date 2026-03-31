@@ -43,14 +43,16 @@ file(GLOB SOURCES "src/*.c")
 # Create executable
 add_executable(bookmark_manager ${SOURCES})
 
-# Link libraries
-target_link_libraries(bookmark_manager
+# Link libraries (deduplicate to avoid duplicate symbol warnings from transitive deps)
+set(ALL_LINK_LIBS
     ${SQLite3_LIBRARIES}
     ${OPENSSL_LIBRARIES}
     ${MHD_LIBRARIES}
     ${JANSSON_LIBRARIES}
     ${JWT_LIBRARIES}
 )
+list(REMOVE_DUPLICATES ALL_LINK_LIBS)
+target_link_libraries(bookmark_manager ${ALL_LINK_LIBS})
 
 # Add compile definitions for JWT
 target_compile_definitions(bookmark_manager PRIVATE
