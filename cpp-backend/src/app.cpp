@@ -386,7 +386,8 @@ void BookmarkManager::run(int port) {
             bookmarks = getBookmarks(username);
         }
         
-        return crow::response(200, bookmarks);
+        crow::json::wvalue result(bookmarks);
+        return crow::response(200, result);
     });
 
     CROW_ROUTE(app, "/bookmarks")
