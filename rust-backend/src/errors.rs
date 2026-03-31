@@ -17,9 +17,6 @@ pub enum AppError {
     #[error("Configuration error: {0}")]
     ConfigError(#[from] crate::config::ConfigError),
 
-    #[error("Password hashing error: {0}")]
-    PasswordHashingError(argon2::Error),
-
     #[error("Password hash parsing error: {0}")]
     PasswordHashParseError(argon2::password_hash::Error),
 
@@ -35,17 +32,11 @@ pub enum AppError {
     #[error("Invalid credentials")]
     InvalidCredentials,
 
-    #[error("User not found")]
-    UserNotFound,
-
     #[error("Bookmark already exists")]
     BookmarkAlreadyExists,
 
     #[error("Bookmark not found")]
     BookmarkNotFound,
-
-    #[error("Unauthorized")]
-    Unauthorized,
 
     #[error("URL parsing error: {0}")]
     UrlParseError(#[from] url::ParseError),
@@ -76,10 +67,6 @@ impl IntoResponse for AppError {
                  eprintln!("Config error: {:?}", e);
                 (StatusCode::INTERNAL_SERVER_ERROR, "Configuration error".to_string())
             }
-            AppError::PasswordHashingError(e) => {
-                 eprintln!("Password hashing error: {:?}", e);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error (hash)".to_string())
-            }
              AppError::PasswordHashParseError(e) => {
                  eprintln!("Password hash parse error: {:?}", e);
                  (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error (hash parse)".to_string())
@@ -91,10 +78,8 @@ impl IntoResponse for AppError {
             AppError::InvalidInput(msg) => (StatusCode::BAD_REQUEST, msg),
             AppError::UserAlreadyExists => (StatusCode::CONFLICT, "User already exists".to_string()),
             AppError::InvalidCredentials => (StatusCode::UNAUTHORIZED, "Invalid username or password".to_string()),
-            AppError::UserNotFound => (StatusCode::NOT_FOUND, "User not found".to_string()),
             AppError::BookmarkAlreadyExists => (StatusCode::CONFLICT, "Bookmark with this URL already exists".to_string()),
             AppError::BookmarkNotFound => (StatusCode::NOT_FOUND, "Bookmark not found".to_string()),
-            AppError::Unauthorized => (StatusCode::UNAUTHORIZED, "Unauthorized".to_string()),
             AppError::UrlParseError(_) => (StatusCode::BAD_REQUEST, "Invalid URL format".to_string()),
             AppError::InternalServerError(msg) => {
                 eprintln!("Internal server error: {}", msg);

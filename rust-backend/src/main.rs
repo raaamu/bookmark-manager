@@ -79,7 +79,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("Bookmark Manager API server running on {}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await
+        .unwrap();
 
     info!("Server shut down gracefully.");
     Ok(())

@@ -82,7 +82,8 @@ pub fn create_jwt(user_id: i64, username: &str, config: &Config) -> Result<Strin
     encode(&header, &claims, &encoding_key).map_err(AppError::JwtError)
 }
 
-// Example function to decode/validate JWT (could be used in middleware)
+// Function to decode/validate JWT - used by authentication middleware/extractor
+#[allow(dead_code)]
 pub fn validate_jwt(token: &str, config: &Config) -> Result<Claims> {
     let decoding_key = DecodingKey::from_secret(config.jwt_secret.as_ref());
     // Specify the algorithm used for encoding

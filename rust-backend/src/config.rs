@@ -8,8 +8,6 @@ use base64;
 pub enum ConfigError {
     #[error("Missing environment variable: {0}")]
     MissingEnvVar(String),
-    #[error("Failed to generate JWT secret: {0}")]
-    JwtSecretGeneration(String),
     #[error("Invalid Base64 salt: {0}")]
     InvalidSaltFormat(#[from] base64::DecodeError), // If using Base64 for salt
     #[error("Invalid Hex salt: {0}")]
